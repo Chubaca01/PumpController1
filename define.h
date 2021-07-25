@@ -114,9 +114,9 @@
  #define RPM_SPEED1   1300
  #define RPM_SPEED2   1800
  #define RPM_SPEED3   2300
- #define RPM_SPEED4   2900
+ #define RPM_SPEED4   2800
  #define RPM_SPEED5   2900
- #define RPM_SPEED6   2900
+ #define RPM_SPEED6   3150
 
  #define RPM_REMOTE   0000
 

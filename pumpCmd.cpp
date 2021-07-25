@@ -9,7 +9,7 @@
 #include "pumpTimer.h"
 #include "message.h"
 
-ExecPumpCmd(char val1,int val2,int val3){
+void ExecPumpCmd(char val1,int val2,int val3){
     digitalWrite(S3,val3);
     sw_pos[3]= val3;
     digitalWrite(S2,val2);
@@ -69,7 +69,7 @@ int getRpm(){
   return NO_RPM;
 }
 
-void boostCmd(char* bCmd){
+void boostCmd(char bCmd){
   if (bCmd == BOOST_ON)
     {
       // pump clean cmd

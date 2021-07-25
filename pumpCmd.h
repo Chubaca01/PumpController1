@@ -2,6 +2,6 @@
   #define COMMAND_H_INCLUDED
   void pumpCmd(char tCmd);
   int getRpm();
-  void boostCmd(char* bCmd);
+  void boostCmd(char bCmd);
   int checkBoostState();
 #endif

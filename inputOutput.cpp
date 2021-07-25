@@ -31,22 +31,21 @@ void eepReadTimer(char *tab,char sizeTab,char addr){
   }
 }
 
-/*int readInput(int X,int n,int S){
+int readInput(int X,int n,int S){
 int val;
 
   val = digitalRead(X);
 
-  if (val != s[n]){
+  if (val != sw_pos[n]){
     //digitalWrite(S,val);
-    s[n]=val;
+    sw_pos[n]=val;
     DebugPrint("Input Updated val:");
     DebugValPrintln(n);
     DebugValPrintln(val);
     return 1;
   }
   return 0;
-}*/
-
+}
 
 void checkEepromWrite(){
 char magicVal;
