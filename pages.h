@@ -11,9 +11,10 @@
     pageObject(char *t,int px1,int py1,int px2,int py2,int px3){strcpy(tText,t);text=&tText[0];posx1=px1;posy1=py1;posx2=px2;posy2=py2;post=px3;isBitmap=0;isblink=0;}
     // constructor header
     pageObject(char *t,int px1,int py1){strcpy(tText,t);text=&tText[0];post=px1;posy1=py1;isBitmap=0;isblink=0;}
-    //pageObject(int px1,int py1){text=&tText[0];post=px1;posy1=py1;isBitmap=0;isblink=0;}
+    // constructor text
+    pageObject(int px1,int py1){text=&tText[0];post=px1;posy1=py1;isBitmap=0;isblink=0;}
     // constructor navigation bar
-    pageObject(int px1,int py1,int px2,int py2){text=&tText[0];posx1=px1;posy1=py1;posx2=px2;posy2=py2;isBitmap=1;isblink;};
+    pageObject(int px1,int py1,int px2,int py2){text=&tText[0];posx1=px1;posy1=py1;posx2=px2;posy2=py2;isBitmap=1;isblink=0;};
     void drawButton(void);
     void drawHeader(void);
     void eraseHeader(void);
@@ -22,7 +23,7 @@
     void eraseText(uint8_t *tSize,int pos);
     void drawBitmp(unsigned int *pBitmap);
     int isButtonPushed(int x,int y);
-    int isButtonPushed(int x,int y,unsigned short *pBitmap);
+    int isButtonPushed(int x,int y,unsigned int *pBitmap);
     void setPos(int px1,int py1,int px2,int py2){posx1=px1;posy1=py1;posx2=px2;posy2=py2;};
     void blinkText(uint8_t *tSize,int pos);
     void setText(char *t){strcpy(tText,t);};

@@ -4,6 +4,7 @@
   void initScreen();
   void initAllTimer();
   void initPages();
+  void initMessages();
   //void initTimer(char addr);
   // interrup function in PumpController.ino
   void readInputAndUpdate();
@@ -12,13 +13,21 @@
   extern URTouch *myTouch;
   extern Ticker *timer1Sec;
 
-  extern int sw_pos[4];
+  extern int sw_pos[];
   extern int currentPage;
   extern int buttonState;
   extern int force;
 
-  extern unsigned short button_home[];
+  extern unsigned int button_home[];
+  extern unsigned int button_on[];
+  extern unsigned int button_off[];
+  extern unsigned int next[];
+  extern unsigned int prev[];
+  extern unsigned short up[];
+  extern unsigned short down[];
+  extern unsigned short save[];
 
   extern uint8_t SmallFont[];
   extern uint8_t BigFont[];
+  extern uint8_t arial_normal[];
 #endif

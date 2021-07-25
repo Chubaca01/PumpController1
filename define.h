@@ -10,7 +10,7 @@
  #define X2  12
  #define X1  13
  #define BP  20
- #define INT0 21
+ #define IT0 21
  #define OUT 17
  #define IN 18
 
@@ -20,14 +20,20 @@
  #define AD_SPEED2_TIMER   0x06  // 4 bytes
  #define AD_SPEED3_TIMER   0x0A  // 4 bytes
  #define AD_SPEED4_TIMER   0x0E  // 4 bytes
- #define AD_PRIME_TIMER    0x12  // 4 bytes
- #define AD_CLEAN_TIMER    0x16  // 4 bytes
- #define AD_MORNING_TIMER  0x1A  // 4 bytes
- #define AD_NIGHT_TIMER    0x1E  // 4 bytes
- #define AD_NO_TIMER       0x22  // 4 bytes
+ #define AD_SPEED5_TIMER   0x12  // 4 bytes
+ #define AD_SPEED6_TIMER   0x16  // 4 bytes
+ #define AD_PRIME_TIMER    0x1A  // 4 bytes
+ #define AD_CLEAN_TIMER    0x1E  // 4 bytes
+ #define AD_MORNING_TIMER  0x22  // 4 bytes
+ #define AD_NIGHT_TIMER    0x26  // 4 bytes
+ #define AD_NO_TIMER       0x2A  // 4 bytes
+
+
+ #define TIMER_TAB_SIZE 20
+
 
  // magic value
- #define MAGIC_VALUE 56
+ #define MAGIC_VALUE 55
  // screen defintion
  #define SETTING_SCREEN ILI9341_16,38,39,40,41
  #define SETTING_TOUCH 6, 5, 4, 3, 2
@@ -60,6 +66,9 @@
  #define ON 1
  #define OFF 0
 
+ #define FORCE_ON 1
+ #define FORCE_OFF 0
+
  // define colors
  #define COLOR_BUTTON VGA_GREEN
  #define LINE_COLOR_BUTTON VGA_WHITE
@@ -86,20 +95,57 @@
  #define NO_MESSAGE 0
  #define CLEAN_TIMER_STOPPED 1
  #define SPEED_TIMER_STOPPED 2
-
  #define CMD_START_CLEAN 3
  #define CMD_START_SPEED1 4
  #define CMD_START_SPEED2 5
  #define CMD_START_SPEED3 6
  #define CMD_START_SPEED4 7
- #define CMD_STOP_PUMP 8
+ #define CMD_START_SPEED5 8
+ #define CMD_START_SPEED6 9
+ #define CMD_STOP_PUMP 10
+ #define SWITCH_POS_CHANGED 11
+ #define BOOST_ON 12
+ #define BOOST_OFF 13
 
 
+// rpm value
+ #define NO_RPM       0000
+ #define RPM_CLEAN    3250
+ #define RPM_SPEED1   1300
+ #define RPM_SPEED2   1800
+ #define RPM_SPEED3   2300
+ #define RPM_SPEED4   2900
+ #define RPM_SPEED5   2900
+ #define RPM_SPEED6   2900
+
+ #define RPM_REMOTE   0000
+
+ // timers
+ #define NO_T 0
+ #define SPEED1 1
+ #define SPEED2 2
+ #define SPEED3 3
+ #define SPEED4 4
+ #define SPEED5 5
+ #define SPEED6 6
+ #define CLEAN 7
+ #define MORNING 8
+ #define NIGHT 9
+ #define REMOTE 10
+
+// timer value
+ #define NO_TIMER NO_T,0,0,0
+ #define MORNING_TIMER MORNING,6,0,0
+ #define NIGHT_TIMER NIGHT,6,0,0
+ #define SPEED1_TIMER SPEED1,0,30,0
+ #define SPEED2_TIMER SPEED2,0,30,0
+ #define SPEED3_TIMER SPEED3,0,30,0
+ #define SPEED4_TIMER SPEED4,0,30,0
+ #define SPEED5_TIMER SPEED5,0,30,0
+ #define SPEED6_TIMER SPEED6,0,30,0
+ #define CLEAN_TIMER CLEAN,0,30,00
 /*
- #define SWITCH_POS_CHANGED 8
 
- #define BOOST_ON 9
- #define BOOST_OFF 10
 
  #define NO_TIMER NO_T,0,0,0
  #define MORNING_TIMER MORNING,6,0,0
@@ -133,8 +179,7 @@
  #define NIGHT 8
  #define REMOTE 9
 
- #define FORCE_ON 1
- #define FORCE_OFF 0
+
  */
 
 

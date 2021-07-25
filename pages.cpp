@@ -1,11 +1,13 @@
 #include <UTFT.h>
 #include <URTouch.h>
-#include "Ticker.h"
-#include "pages.h"
-#include "drawPage.h"
-#include "define.h"
-#include "debug.h"
-#include "initVal.h"
+#include <Ticker.h>
+#include <string.h>
+#include <define.h>
+#include <pages.h>
+#include <drawPage.h>
+#include <define.h>
+#include <debug.h>
+#include <initVal.h>
 
 // Page1
 /*
@@ -65,7 +67,7 @@ int pageObject::isButtonPushed(int x,int y){
   return 0;
 }
 
-int pageObject::isButtonPushed(int x,int y,unsigned short *pBitmap){
+int pageObject::isButtonPushed(int x,int y,unsigned int *pBitmap){
   if ((x>=posx1) && (x<=posx2) && (y>=posy1) && (y<=posy2)) {
     drawBitmp(pBitmap);
     while (myTouch->dataAvailable())
