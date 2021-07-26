@@ -235,6 +235,20 @@ void loop() {
       }
     break;
     case BOOST_PUMP:
+    if (buttonOnOff->isButtonPushed(x,y,button_on)){
+            if (!buttonState){
+                buttonState = ON;
+                // start boost pump
+                boostMessage->sendMessage(BOOST_ON);
+              }
+              else{
+                buttonState = OFF;
+                // stop boost pump
+                boostMessage->sendMessage(BOOST_OFF);
+              }
+              buttonOnOff->drawBitmp(button_off);
+              return;
+           }
       if (buttonHome1->isButtonPushed(x,y)){
         goHomePage();
         break;
@@ -301,7 +315,6 @@ void goHomePage(){
 
 // running page
 void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) ){
-char *mes;
 
       if (buttonOnOff->isButtonPushed(x,y)||(force==FORCE_ON)){
         if (!buttonState){
@@ -404,6 +417,17 @@ int val;
     boostCmd(mes);
     boostMessage->clearMessage();
   }
+  if(cMessage->isMessage()){
+    mes = cMessage->getMessage();
+    if((mes == SPEED_TIMER_STOPPED)||(mes == CLEAN_TIMER_STOPPED) ){
+    // stop pump
+    drawButton(OFF);
+    buttonState = OFF;
+    drawRpm(NO_RPM,NO_T);
+    stopTimer(runningTimer->currentTimer);
+    sendPumpMessage(NO_T);
+    }
+  }
   if(sMessage->isMessage()){
     mes = sMessage->getMessage();
     delay(1000); //debounce
@@ -415,9 +439,7 @@ int val;
       case NO_RPM:
         sendPumpMessage(NO_T);
         stopTimer(runningTimer->currentTimer);
-        erasePage();
-        drawHomePage();
-        currentPage = HOME;
+        goHomePage();
         break;
       case RPM_CLEAN:
         erasePage();

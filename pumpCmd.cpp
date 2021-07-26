@@ -25,22 +25,22 @@ void ExecPumpCmd(char val1,int val2,int val3){
 void pumpCmd(char tCmd){
 
     if (tCmd == CMD_START_SPEED1){
-      ExecPumpCmd(HIGH,LOW,HIGH);
+      ExecPumpCmd(LOW,HIGH,HIGH);
     }
     else if (tCmd == CMD_START_SPEED2){
-      ExecPumpCmd(LOW,LOW,HIGH);
+      ExecPumpCmd(HIGH,LOW,HIGH);
     }
     else if (tCmd == CMD_START_SPEED3){
-      ExecPumpCmd(HIGH,HIGH,LOW);
+      ExecPumpCmd(LOW,LOW,HIGH);
     }
     else if (tCmd == CMD_START_SPEED4){
-      ExecPumpCmd(LOW,HIGH,LOW);
+      ExecPumpCmd(HIGH,HIGH,LOW);
     }
     else if (tCmd == CMD_START_SPEED5){
       ExecPumpCmd(LOW,HIGH,LOW);
     }
     else if (tCmd == CMD_START_SPEED6){
-      ExecPumpCmd(LOW,HIGH,LOW);
+      ExecPumpCmd(HIGH,LOW,LOW);
     }
     else if (tCmd == CMD_START_CLEAN){
       ExecPumpCmd(HIGH,LOW,LOW);
@@ -72,25 +72,25 @@ int getRpm(){
 void boostCmd(char bCmd){
   if (bCmd == BOOST_ON)
     {
-      // pump clean cmd
-      ExecPumpCmd(HIGH,LOW,LOW);
+      // run pump
+      pumpCmd(CMD_START_SPEED4);
       // start boost pump
-      digitalWrite(BOOST_PUMP,LOW);
+      digitalWrite(BP,LOW);
       return;
     }
   else if (bCmd == BOOST_OFF)
     {
       // stop boost pump
-      digitalWrite(BOOST_PUMP,HIGH);
+      digitalWrite(BP,HIGH);
       // stop pump
-      ExecPumpCmd(HIGH,HIGH,HIGH);
+      pumpCmd(CMD_STOP_PUMP);
       return;
     }
 }
 
 int checkBoostState(){
 int val;
-  val = digitalRead(BOOST_PUMP);
+  val = digitalRead(BP);
   if (val == HIGH)
     return OFF;
   else

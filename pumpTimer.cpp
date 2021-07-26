@@ -103,6 +103,7 @@ void updateTimer(){
    if(runningTimer->stat[curTimer]){
       if (runningTimer->dec(curTimer)){
          sendMessageTimerStop(curTimer);
+         drawTimerData(curTimer);
       }
       else
       drawTimerData(curTimer);
