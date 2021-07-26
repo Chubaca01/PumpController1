@@ -78,10 +78,6 @@ void pumpTimer::secDown(int timer){
     secMod[timer]--;
 }
 
-
-
-
-
 void startTimer(char curTimer){
   runningTimer->initModVal(curTimer);
   runningTimer->setCurrentTimer(curTimer);

@@ -15,14 +15,6 @@
   void drawTimerData(int curTimer);
   void drawButton(int mode);
   void drawSaved(int curTimer);
-  /*
-
-
-
-
-  void drawRemotePage();
- */
-
 
   // Page1 home page external
   extern pageObject *headerPage1;

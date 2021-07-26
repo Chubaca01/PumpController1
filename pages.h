@@ -29,50 +29,6 @@
     void setText(char *t){strcpy(tText,t);};
   };
 
-  /*extern page *speedButton;
-  extern page *quickCleanButton;
-  extern page *setupButton;
-  extern page *boostButton;
-  extern page *headerPage1;
-
-  extern page *headerPage2;
-  extern page *quickCleanTimerButton;
-  extern page *speedTimerButton;
-  extern page *primeSpeedButton;
-
-  extern page *headerPage3;
-  extern page *text3;
-  extern page *text1;
-  extern page *text2;
-  extern page *text0;
-  extern page *buttonOnOff;
-  extern page *buttonHome1;
-  extern page *buttonNext;
-  extern page *buttonPrev;
-  extern page *up1;
-  extern page *up2;
-  extern page *up3;
-  extern page *down1;
-  extern page *down2;
-  extern page *down3;
-  extern page *buttonSave;
-
-  extern page *headerPage4;
-
-  extern page *headerPage5;
-  extern page *headerPage6;
-  extern page *headerPage7;
-  extern page *headerPage8;
-  extern page *headerPage9;
-  extern page *headerPage10;
-
-  extern page *speedButton1;
-  extern page *speedButton2;
-  extern page *speedButton3;
-  extern page *speedButton4;
-  extern page *speedButton5;
-  extern page *speedButton6;*/
-
   void erasePage();
   void erasePageHeader();
 #endif

@@ -9,50 +9,6 @@
 #include <debug.h>
 #include <initVal.h>
 
-// Page1
-/*
-
-// Page2
-page *headerPage2;
-page *quickCleanTimerButton;
-page *speedTimerButton;
-page *primeSpeedButton;
-
-// Page 3
-page *headerPage3;
-page *text3;
-page *text1;
-page *text2;
-page *text0;
-page *buttonOnOff;
-page *buttonHome1;
-page *buttonNext;
-page *buttonPrev;
-page *up1;
-page *up2;
-page *up3;
-page *down1;
-page *down2;
-page *down3;
-page *buttonSave;
-
-page *headerPage4;
-
-page *headerPage5;
-page *headerPage6;
-page *headerPage7;
-page *headerPage8;
-page *headerPage9;
-page *headerPage10;
-
-page *speedButton1;
-page *speedButton2;
-page *speedButton3;
-page *speedButton4;
-page *speedButton5;
-page *speedButton6;*/
-
-
 int pageObject::isButtonPushed(int x,int y){
   if ((x>=posx1) && (x<=posx2) && (y>=posy1) && (y<=posy2)) {
     if(!isBitmap){

@@ -160,9 +160,3 @@ void initMessages(){
   sMessage = new message();
   boostMessage = new message;
 }
-/*
-
-
-// init message
-
-*/
