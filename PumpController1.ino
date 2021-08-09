@@ -12,7 +12,8 @@
 #include "message.h"
 
 void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) );
-void checkSettingPage(int x,int y,char curTimer,int bPrev,void (*fDraw)(void),char addr);
+void checkSettingTimerPage(int x,int y,char curTimer,int bPrev,int bNext,void (*fDraw)(void),char addr);
+void checkSettingRpmPage(int x,int y,char curTimer,int bPrev,char addr);
 void checkMessage();
 
 void setup() {
@@ -23,7 +24,9 @@ void setup() {
   initPages();
   initMessages();
   drawHomePage();
+  checkEepromWrite();
   initAllTimer();
+  initRpm();
   currentPage = HOME;
 }
 
@@ -47,7 +50,7 @@ void loop() {
     if (quickCleanButton->isButtonPushed(x,y)){
       erasePage();
       drawQuickCleanPage();
-      drawRpm(NO_RPM,NO_T);
+      drawRpm(NO_T);
       drawResetTimerData();
       buttonState = OFF;
       currentPage = QUICK_CLEAN ;
@@ -93,7 +96,7 @@ void loop() {
           break;
         }
         drawSpeedPage(SPEED1);
-        drawRpm(NO_RPM,NO_T);
+        drawRpm(NO_T);
         drawResetTimerData();
         buttonState = OFF;
         currentPage = RSPEED1;
@@ -107,7 +110,7 @@ void loop() {
           break;
         }
         drawSpeedPage(SPEED2);
-        drawRpm(NO_RPM,NO_T);
+        drawRpm(NO_T);
         drawResetTimerData();
         buttonState = OFF;
         currentPage = RSPEED2;
@@ -121,7 +124,7 @@ void loop() {
           break;
         }
         drawSpeedPage(SPEED3);
-        drawRpm(NO_RPM,NO_T);
+        drawRpm(NO_T);
         drawResetTimerData();
         buttonState = OFF;
         currentPage = RSPEED3;
@@ -163,7 +166,7 @@ void loop() {
             break;
           }
           drawSpeedPage(SPEED4);
-          drawRpm(NO_RPM,NO_T);
+          drawRpm(NO_T);
           drawResetTimerData();
           buttonState = OFF;
           currentPage = RSPEED4;
@@ -177,7 +180,7 @@ void loop() {
             break;
           }
           drawSpeedPage(SPEED5);
-          drawRpm(NO_RPM,NO_T);
+          drawRpm(NO_T);
           drawResetTimerData();
           buttonState = OFF;
           currentPage = RSPEED5;
@@ -191,7 +194,7 @@ void loop() {
             break;
           }
           drawSpeedPage(SPEED6);
-          drawRpm(NO_RPM,NO_T);
+          drawRpm(NO_T);
           drawResetTimerData();
           buttonState = OFF;
           currentPage = RSPEED6;
@@ -259,6 +262,36 @@ void loop() {
         }
     break;
     case DREMOTE:
+    if (buttonOnOff->isButtonPushed(x,y)){
+      if (!buttonState){
+          drawButton(ON);
+          buttonState = ON;
+          drawRpmRemoteData();
+          // start pump
+          pumpCmd(rpm->curRemoteRpm);
+          break;
+        }
+        else{
+          drawButton(OFF);
+          buttonState = OFF;
+          drawRpm(NO_T);
+          // stop pump
+          sendPumpMessage(NO_T);
+          break;
+        }
+     }
+      if (buttonHome1->isButtonPushed(x,y)){
+       // stop pump
+       sendPumpMessage(NO_T);
+       goHomePage();
+       break;
+      }
+      if (buttonPrev->isButtonPushed(x,y)){
+       // stop pump
+       sendPumpMessage(NO_T);
+       goHomePage();
+       break;
+      }
     break;
     case RSPEED1:
       checkRunningPage(x,y,RPM_SPEED1,SPEED1_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
@@ -279,27 +312,47 @@ void loop() {
       checkRunningPage(x,y,RPM_SPEED6,SPEED6_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
     break;
     case QTSETUP_CLEAN:
-      checkSettingPage(x,y,CLEAN,SETUP,drawSetupPage,AD_CLEAN_TIMER);
+      checkSettingTimerPage(x,y,CLEAN,SETUP,QRSETUP_CLEAN,drawSetupPage,AD_CLEAN_TIMER);
     break;
     case QTSETUP_SPEED1:
-      checkSettingPage(x,y,SPEED1,SSPEED1,drawSpeedPage1,AD_SPEED1_TIMER);
+      checkSettingTimerPage(x,y,SPEED1,SSPEED1,QRSETUP_SPEED1,drawSpeedPage1,AD_SPEED1_TIMER);
     break;
     case QTSETUP_SPEED2:
-      checkSettingPage(x,y,SPEED2,SSPEED1,drawSpeedPage1,AD_SPEED2_TIMER);
+      checkSettingTimerPage(x,y,SPEED2,SSPEED1,QRSETUP_SPEED2,drawSpeedPage1,AD_SPEED2_TIMER);
     break;
     case QTSETUP_SPEED3:
-      checkSettingPage(x,y,SPEED3,SSPEED1,drawSpeedPage1,AD_SPEED3_TIMER);
+      checkSettingTimerPage(x,y,SPEED3,SSPEED1,QRSETUP_SPEED3,drawSpeedPage1,AD_SPEED3_TIMER);
     break;
     case QTSETUP_SPEED4:
-      checkSettingPage(x,y,SPEED4,SSPEED2,drawSpeedPage2,AD_SPEED4_TIMER);
+      checkSettingTimerPage(x,y,SPEED4,SSPEED2,QRSETUP_SPEED4,drawSpeedPage2,AD_SPEED4_TIMER);
     break;
     case QTSETUP_SPEED5:
-      checkSettingPage(x,y,SPEED5,SSPEED2,drawSpeedPage2,AD_SPEED5_TIMER);
+      checkSettingTimerPage(x,y,SPEED5,SSPEED2,QRSETUP_SPEED4,drawSpeedPage2,AD_SPEED5_TIMER);
     break;
     case QTSETUP_SPEED6:
-      checkSettingPage(x,y,SPEED6,SSPEED2,drawSpeedPage2,AD_SPEED6_TIMER);
+      checkSettingTimerPage(x,y,SPEED6,SSPEED2,QRSETUP_SPEED6,drawSpeedPage2,AD_SPEED6_TIMER);
     break;
-
+    case QRSETUP_CLEAN:
+      checkSettingRpmPage(x,y,CLEAN,QTSETUP_CLEAN,AD_RPM_CLEAN_TIMER);
+    break;
+    case QRSETUP_SPEED1:
+      checkSettingRpmPage(x,y,SPEED1,QTSETUP_SPEED1,AD_RPM_SPEED1_TIMER);
+    break;
+    case QRSETUP_SPEED2:
+      checkSettingRpmPage(x,y,SPEED2,QTSETUP_SPEED2,AD_RPM_SPEED2_TIMER);
+    break;
+    case QRSETUP_SPEED3:
+      checkSettingRpmPage(x,y,SPEED3,QTSETUP_SPEED3,AD_RPM_SPEED3_TIMER);
+    break;
+    case QRSETUP_SPEED4:
+      checkSettingRpmPage(x,y,SPEED4,QTSETUP_SPEED4,AD_RPM_SPEED4_TIMER);
+    break;
+    case QRSETUP_SPEED5:
+      checkSettingRpmPage(x,y,SPEED5,QTSETUP_SPEED5,AD_RPM_SPEED5_TIMER);
+    break;
+    case QRSETUP_SPEED6:
+      checkSettingRpmPage(x,y,SPEED6,QTSETUP_SPEED6,AD_RPM_SPEED6_TIMER);
+    break;
   }
   checkMessage();
   timer1Sec->update();
@@ -321,7 +374,7 @@ void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,cha
             drawButton(ON);
             force = FORCE_OFF;
             buttonState = ON;
-            drawRpm(rpm,curTimer);
+            drawRpm(curTimer);
             // start pump
             startTimer(curTimer);
             // start pump
@@ -332,7 +385,7 @@ void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,cha
           else{
             drawButton(OFF);
             buttonState = OFF;
-            drawRpm(NO_RPM,NO_T);
+            drawRpm(NO_T);
             // stop pump
             sendPumpMessage(NO_T);
             stopTimer(curTimer);
@@ -356,16 +409,22 @@ void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,cha
         return;
        }
     }
-void checkSettingPage(int x,int y,char curTimer,int bPrev,void (*fDraw)(void),char addr){
+void checkSettingTimerPage(int x,int y,char curTimer,int bPrev,int bNext,void (*fDraw)(void),char addr){
 
-  if (buttonHome1->isButtonPushed(x,y)){
-    goHomePage();
-    return;
-  }
+  //if (buttonHome1->isButtonPushed(x,y)){
+  //  goHomePage();
+  //  return;
+  //}
   if (buttonPrev->isButtonPushed(x,y)){
     erasePage();
     (*fDraw)();
     currentPage = bPrev;
+    return;
+  }
+  if (buttonNext->isButtonPushed(x,y)){
+    erasePage();
+    drawRpmSetup(curTimer);
+    currentPage = bNext;
     return;
   }
   if (up1->isButtonPushed(x,y)){
@@ -403,6 +462,36 @@ void checkSettingPage(int x,int y,char curTimer,int bPrev,void (*fDraw)(void),ch
     drawSaved(curTimer);
   }
 }
+
+void checkSettingRpmPage(int x,int y,char curTimer,int bPrev,char addr){
+
+  if (buttonHome1->isButtonPushed(x,y)){
+    goHomePage();
+    return;
+  }
+  if (buttonPrev->isButtonPushed(x,y)){
+    erasePage();
+    drawTimerSetup(curTimer);
+    currentPage = bPrev;
+    return;
+  }
+  if (up2->isButtonPushed(x,y)){
+    rpm->rpmUp(curTimer);
+    drawRpmDataSetting(curTimer);
+    return;
+  }
+  if (down2->isButtonPushed(x,y)){
+    rpm->rpmDown(curTimer);
+    drawRpmDataSetting(curTimer);
+    return;
+  }
+
+  if (buttonSave->isButtonPushed(x,y)){
+    rpm->saveRpm(addr,curTimer);
+    drawSavedRpm(curTimer);
+  }
+}
+
 void checkMessage(){
 char mes;
 int val;
@@ -423,95 +512,43 @@ int val;
     // stop pump
     drawButton(OFF);
     buttonState = OFF;
-    drawRpm(NO_RPM,NO_T);
+    drawRpm(NO_T);
     stopTimer(runningTimer->currentTimer);
     sendPumpMessage(NO_T);
     }
   }
   if(sMessage->isMessage()){
     mes = sMessage->getMessage();
-    delay(1000); //debounce
-    readInput(X1,1,S1);
-    readInput(X2,2,S2);
-    readInput(X3,3,S3);
-    val = getRpm();
-    switch (val){
-      case NO_RPM:
-        sendPumpMessage(NO_T);
-        stopTimer(runningTimer->currentTimer);
-        goHomePage();
-        break;
-      case RPM_CLEAN:
+    if (mes == CHECK_INPUT_VALUES){
+      delay(1000); //debounce
+      readInput(X1,1,S1);
+      readInput(X2,2,S2);
+      readInput(X3,3,S3);
+      val = getRpm();
+      rpm->curRemoteRpm = val;
+      if(val==NO_RPM){
+        if (currentPage != HOME){
+          sendPumpMessage(NO_T);
+          stopTimer(runningTimer->currentTimer);
+          goHomePage();
+        }
+      }
+      else{
         erasePage();
-        drawQuickCleanPage();
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = QUICK_CLEAN ;
-        break;
-      case RPM_SPEED1:
-        erasePage();
-        drawSpeedPage(SPEED1);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED1 ;
-        break;
-      case RPM_SPEED2:
-        erasePage();
-        drawSpeedPage(SPEED2);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED2;
-        break;
-      case RPM_SPEED3:
-        erasePage();
-        drawSpeedPage(SPEED3);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED3;
-        break;
-      case RPM_SPEED4:
-        erasePage();
-        drawSpeedPage(SPEED4);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED4;
-        break;
-      case RPM_SPEED5:
-        erasePage();
-        drawSpeedPage(SPEED5);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED5;
-        break;
-      case RPM_SPEED6:
-        erasePage();
-        drawSpeedPage(SPEED6);
-        drawRpm(NO_RPM,NO_T);
-        drawResetTimerData();
-        buttonState = OFF;
-        force = FORCE_ON;
-        currentPage = RSPEED6;
-        break;
+        drawRemotePage();
+        buttonState = ON;
+        pumpCmd(val);
+        currentPage = DREMOTE ;
+      }
     }
+    sMessage->clearMessage();
   }
 }
 
 
 // interrupt function
 void readInputAndUpdate(){
-  sMessage->sendMessage(SWITCH_POS_CHANGED);
+  sMessage->sendMessage(CHECK_INPUT_VALUES);
 }
 
 

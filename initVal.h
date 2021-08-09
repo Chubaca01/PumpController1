@@ -3,6 +3,7 @@
   void initInputOutput();
   void initScreen();
   void initAllTimer();
+  void initRpm();
   void initPages();
   void initMessages();
   //void initTimer(char addr);

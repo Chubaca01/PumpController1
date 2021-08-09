@@ -8,6 +8,7 @@
 #include <define.h>
 #include <debug.h>
 #include <initVal.h>
+#include "inputOutput.h"
 
 int pageObject::isButtonPushed(int x,int y){
   if ((x>=posx1) && (x<=posx2) && (y>=posy1) && (y<=posy2)) {
@@ -103,6 +104,20 @@ void pageObject::blinkText(uint8_t *tSize,int pos){
   }
 }
 
+void pageObject::rpmUp(int cur){
+  if (rpmMod[cur] < MAX_RPM)
+    rpmMod[cur] = rpmMod[cur]+1;
+}
+void pageObject::rpmDown(int cur){
+  if (rpmMod[cur] > 1)
+    rpmMod[cur] = rpmMod[cur]-1;
+}
+
+void pageObject::saveRpm(char addr,int timer){
+  rpm[timer] = rpmMod[timer];
+  DebugValPrintln(rpm[timer]);
+  eepWriteRpm(rpmMod[timer],addr);
+}
 // function call
 void erasePage(){
   myGLCD->clrScr();

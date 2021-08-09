@@ -22,49 +22,86 @@ void ExecPumpCmd(char val1,int val2,int val3){
 }
 
 // pump command
-void pumpCmd(char tCmd){
-
+void pumpCmd(int tCmd){
+    int val;
     if (tCmd == CMD_START_SPEED1){
-      ExecPumpCmd(LOW,HIGH,HIGH);
+      val = rpm->rpm[SPEED1];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED2){
-      ExecPumpCmd(HIGH,LOW,HIGH);
+      val = rpm->rpm[SPEED2];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED3){
-      ExecPumpCmd(LOW,LOW,HIGH);
+      val = rpm->rpm[SPEED3];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED4){
-      ExecPumpCmd(HIGH,HIGH,LOW);
+      val = rpm->rpm[SPEED4];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED5){
-      ExecPumpCmd(LOW,HIGH,LOW);
+      val = rpm->rpm[SPEED5];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED6){
-      ExecPumpCmd(HIGH,LOW,LOW);
+      val = rpm->rpm[SPEED6];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_CLEAN){
-      ExecPumpCmd(HIGH,LOW,LOW);
+      val = rpm->rpm[CLEAN];
+      val = rpm->rpmTab[val];
     }
     else if (tCmd== CMD_STOP_PUMP){
+      DebugPrintln("pump stopped");
       ExecPumpCmd(HIGH,HIGH,HIGH);
+      return;
+    }
+    else{ // start pump based on RPM
+      val = tCmd;
+    }
+    switch (val) {
+      case RPM_SPEED1:
+        ExecPumpCmd(LOW,HIGH,HIGH);
+      break;
+      case RPM_SPEED2:
+        ExecPumpCmd(HIGH,LOW,HIGH);
+      break;
+      case RPM_SPEED3:
+        ExecPumpCmd(LOW,LOW,HIGH);
+      break;
+      case RPM_SPEED4:
+        ExecPumpCmd(HIGH,HIGH,LOW);
+      break;
+      case RPM_SPEED5:
+        ExecPumpCmd(LOW,HIGH,LOW);
+      break;
+      case RPM_SPEED6:
+        ExecPumpCmd(HIGH,LOW,LOW);
+      break;
+      case RPM_CLEAN:
+        ExecPumpCmd(LOW,LOW,LOW);
+      break;
     }
 }
 
 int getRpm(){
   if ((sw_pos[1] == HIGH) && (sw_pos[2] == HIGH) && (sw_pos[3]== HIGH)){
       return NO_RPM;
-  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
-      return RPM_SPEED1;
-  }else if ((sw_pos[1] == LOW) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
-      return RPM_SPEED2;
-  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
-      return RPM_SPEED3;
-  }else if ((sw_pos[1] == LOW) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
-      return RPM_SPEED4;
-  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== LOW)){
-      return RPM_CLEAN;
   }else if ((sw_pos[1] == LOW) && (sw_pos[2] == HIGH) && (sw_pos[3]== HIGH)){
-      return NO_RPM;
+      return RPM_SPEED1;
+  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
+      return RPM_SPEED2;
+  }else if ((sw_pos[1] == LOW) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
+      return RPM_SPEED3;
+  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
+      return RPM_SPEED4;
+  }else if ((sw_pos[1] == LOW) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
+      return RPM_SPEED5;
+  }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== LOW)){
+      return RPM_SPEED6;
+  }else if ((sw_pos[1] == LOW) && (sw_pos[2] == LOW) && (sw_pos[3]== LOW)){
+      return RPM_CLEAN;
   }
   return NO_RPM;
 }
@@ -73,7 +110,7 @@ void boostCmd(char bCmd){
   if (bCmd == BOOST_ON)
     {
       // run pump
-      pumpCmd(CMD_START_SPEED4);
+      pumpCmd(CMD_START_CLEAN);
       // start boost pump
       digitalWrite(BP,LOW);
       return;

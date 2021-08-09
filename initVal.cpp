@@ -106,6 +106,9 @@ void initPages(){
   headerPage6 = new pageObject("Quick Timer Setting",10,32);
   headerPage7 = new pageObject("Speeds Timer Setting",10,32);
 
+  // remote page
+  headerPage8 = new pageObject("-- Remote --",10,32);
+
   // bottom navigation bar
   buttonOnOff= new pageObject(POS_RIGHT);
   buttonHome1= new pageObject(POS_MIDDLE);
@@ -129,6 +132,27 @@ void initPages(){
   text3= new pageObject(110,0);
 }
 
+void initRpm() {
+rpm = new pageObject(110,0);
+rpm->initRpm(NO_T,0);
+rpm->initRpm(CLEAN,eepReadRpm(AD_RPM_CLEAN_TIMER));
+rpm->initRpm(SPEED1,eepReadRpm(AD_RPM_SPEED1_TIMER));
+rpm->initRpm(SPEED2,eepReadRpm(AD_RPM_SPEED2_TIMER));
+rpm->initRpm(SPEED3,eepReadRpm(AD_RPM_SPEED3_TIMER));
+rpm->initRpm(SPEED4,eepReadRpm(AD_RPM_SPEED4_TIMER));
+rpm->initRpm(SPEED5,eepReadRpm(AD_RPM_SPEED5_TIMER));
+rpm->initRpm(SPEED6,eepReadRpm(AD_RPM_SPEED6_TIMER));
+rpm->rpmTab[0] = NO_RPM;
+rpm->rpmTab[1] = RPM_SPEED1;
+rpm->rpmTab[2] = RPM_SPEED2;
+rpm->rpmTab[3] = RPM_SPEED3;
+rpm->rpmTab[4] = RPM_SPEED4;
+rpm->rpmTab[5] = RPM_SPEED5;
+rpm->rpmTab[6] = RPM_SPEED6;
+rpm->rpmTab[7] = RPM_CLEAN;
+sMessage->sendMessage(CHECK_INPUT_VALUES);
+}
+
 void initTimer(char addr)
 {
   char TimerVal[4];
@@ -140,7 +164,7 @@ void initAllTimer(){
   runningTimer = new pumpTimer();
   // init loop timer 1 second
   timer1Sec = new Ticker(updateTimer, 1000);
-  checkEepromWrite();
+
   initTimer(AD_SPEED1_TIMER);
   initTimer(AD_SPEED2_TIMER);
   initTimer(AD_SPEED3_TIMER);

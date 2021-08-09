@@ -65,3 +65,6 @@ void sendMessageTimerStop(char curTimer){
       break;
   }
 }
+void sendPumpMessageRpm(int rpm){
+  pumpMessage->sendMessage(rpm);
+}

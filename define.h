@@ -15,25 +15,31 @@
  #define IN 18
 
  // ==== address eeprom  ====
- #define AD_MAGIC_VALUE    0x00  //  byte
- #define AD_SPEED1_TIMER   0x02  // 4 bytes
- #define AD_SPEED2_TIMER   0x06  // 4 bytes
- #define AD_SPEED3_TIMER   0x0A  // 4 bytes
- #define AD_SPEED4_TIMER   0x0E  // 4 bytes
- #define AD_SPEED5_TIMER   0x12  // 4 bytes
- #define AD_SPEED6_TIMER   0x16  // 4 bytes
- #define AD_PRIME_TIMER    0x1A  // 4 bytes
- #define AD_CLEAN_TIMER    0x1E  // 4 bytes
- #define AD_MORNING_TIMER  0x22  // 4 bytes
- #define AD_NIGHT_TIMER    0x26  // 4 bytes
- #define AD_NO_TIMER       0x2A  // 4 bytes
-
+ #define AD_MAGIC_VALUE       0x00  //  byte
+ #define AD_SPEED1_TIMER      0x02  // 4 bytes
+ #define AD_SPEED2_TIMER      0x06  // 4 bytes
+ #define AD_SPEED3_TIMER      0x0A  // 4 bytes
+ #define AD_SPEED4_TIMER      0x0E  // 4 bytes
+ #define AD_SPEED5_TIMER      0x12  // 4 bytes
+ #define AD_SPEED6_TIMER      0x16  // 4 bytes
+ #define AD_PRIME_TIMER       0x1A  // 4 bytes
+ #define AD_CLEAN_TIMER       0x1E  // 4 bytes
+ #define AD_MORNING_TIMER     0x22  // 4 bytes
+ #define AD_NIGHT_TIMER       0x26  // 4 bytes
+ #define AD_NO_TIMER          0x2A  // 4 bytes
+ #define AD_RPM_SPEED1_TIMER  0x2B  // 1 bytes
+ #define AD_RPM_SPEED2_TIMER  0x2C  // 1 bytes
+ #define AD_RPM_SPEED3_TIMER  0x2D  // 1 bytes
+ #define AD_RPM_SPEED4_TIMER  0x2F  // 1 bytes
+ #define AD_RPM_SPEED5_TIMER  0x30  // 1 bytes
+ #define AD_RPM_SPEED6_TIMER  0x31  // 1 bytes
+ #define AD_RPM_CLEAN_TIMER   0x32  // 1 bytes
 
  #define TIMER_TAB_SIZE 20
 
 
  // magic value
- #define MAGIC_VALUE 55
+ #define MAGIC_VALUE 66
  // screen defintion
  #define SETTING_SCREEN ILI9341_16,38,39,40,41
  #define SETTING_TOUCH 6, 5, 4, 3, 2
@@ -59,8 +65,15 @@
  #define QTSETUP_SPEED4 18
  #define QTSETUP_SPEED5 19
  #define QTSETUP_SPEED6 20
- #define DREMOTE 21
- #define BOOST_PUMP 22
+ #define QRSETUP_CLEAN 21
+ #define QRSETUP_SPEED1 22
+ #define QRSETUP_SPEED2 23
+ #define QRSETUP_SPEED3 24
+ #define QRSETUP_SPEED4 25
+ #define QRSETUP_SPEED5 26
+ #define QRSETUP_SPEED6 27
+ #define DREMOTE 28
+ #define BOOST_PUMP 29
 
 
  #define ON 1
@@ -103,7 +116,7 @@
  #define CMD_START_SPEED5 8
  #define CMD_START_SPEED6 9
  #define CMD_STOP_PUMP 10
- #define SWITCH_POS_CHANGED 11
+ #define CHECK_INPUT_VALUES 11
  #define BOOST_ON 12
  #define BOOST_OFF 13
 
@@ -119,6 +132,8 @@
  #define RPM_SPEED6   3000
 
  #define RPM_REMOTE   0000
+
+ #define MAX_RPM 7
 
  // timers
  #define NO_T 0

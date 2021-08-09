@@ -41,6 +41,9 @@
   pageObject *headerPage6;
   pageObject *headerPage7;
 
+  // remote page
+  pageObject *headerPage8;
+
   // bottom navigation bar
   pageObject *buttonOnOff;
   pageObject *buttonHome1;
@@ -61,6 +64,9 @@
   pageObject *text1;
   pageObject *text2;
   pageObject *text0;
+
+  // rpm 0bject
+  pageObject *rpm;
 
 void drawHomePage(){
   // Title
@@ -126,6 +132,24 @@ void drawSetupPage(){
   buttonPrev->drawBitmp(prev);
 }
 
+void drawRpmRemoteData(){
+  // display RPM data
+  myGLCD->setColor(TEXT_COLOR); // Sets color to white
+  myGLCD->printNumI(rpm->curRemoteRpm,139,80,4,'0');
+}
+
+void drawRemotePage(){
+  // Title
+  headerPage8->drawHeader();
+  // text1
+  text1->drawText("  Speed: ---- RPM",arial_normal,LEFT);
+  buttonOnOff->setPos(POS_MIDDLE);
+  buttonOnOff->drawBitmp(button_on);
+  buttonHome1->setPos(POS_RIGHT);
+  buttonHome1->drawBitmp(button_home);
+  buttonPrev->drawBitmp(prev);
+  drawRpmRemoteData();
+}
 
 void drawContentRunning(){
   // text1
@@ -142,13 +166,16 @@ void drawContentRunning(){
   buttonPrev->drawBitmp(prev);
 }
 
-void drawRpm(int type,int curTimer){
+void drawRpm(int curTimer){
+  int val;
   switch(curTimer){
     case(CLEAN):
     case(SPEED1):
     case(SPEED2):
     case(SPEED3):
     case(SPEED4):
+    case(SPEED5):
+    case(SPEED6):
       text0->setText("-- Running --");
     break;
     case(REMOTE):
@@ -160,7 +187,8 @@ void drawRpm(int type,int curTimer){
   }
   // display RPM data
   myGLCD->setColor(TEXT_COLOR); // Sets color to white
-  myGLCD->printNumI(type,139,80,4,'0');
+  val = rpm->rpmMod[curTimer];
+  myGLCD->printNumI(rpm->rpmTab[val],139,80,4,'0');
 }
 
 void drawResetTimerData() {
@@ -195,9 +223,30 @@ void drawTimerSetup(int curTimer){
       headerPage7->drawHeader();
       break;
   }
-  drawContentSetup();
+  drawContentSetupTimer();
   runningTimer->initModVal(curTimer);
   drawTimerDataSetting(curTimer);
+}
+
+void drawRpmSetup(int curTimer){
+  int val;
+  switch (curTimer) {
+    case CLEAN:
+      headerPage6->drawHeader();
+      break;
+    case SPEED1:
+    case SPEED2:
+    case SPEED3:
+    case SPEED4:
+    case SPEED5:
+    case SPEED6:
+      headerPage7->drawHeader();
+      break;
+  }
+  drawContentSetupRpm();
+  rpm->initModVal(curTimer);
+  val = rpm->rpmMod[curTimer];
+  myGLCD->printNumI(rpm->rpmTab[val],128,110,4,'0');
 }
 
 void drawSpeedPage(int speed){
@@ -209,7 +258,7 @@ void drawSpeedPage(int speed){
   drawContentRunning();
 }
 
-void drawContentSetup(){
+void drawContentSetupTimer(){
   text0->drawText("   hr    mn    sec",arial_normal,LEFT);
   up1->drawBitmp(up);
   up2->drawBitmp(up);
@@ -217,6 +266,15 @@ void drawContentSetup(){
   down1->drawBitmp(down);
   down2->drawBitmp(down);
   down3->drawBitmp(down);
+  buttonSave->drawBitmp(save);
+  buttonPrev->drawBitmp(prev);
+  buttonNext->drawBitmp(next);
+}
+
+void drawContentSetupRpm(){
+  rpm->drawText("   RPM:",arial_normal,LEFT);
+  up2->drawBitmp(up);
+  down2->drawBitmp(down);
   buttonHome1->setPos(POS_RIGHT);
   buttonSave->drawBitmp(save);
   buttonHome1->drawBitmp(button_home);
@@ -236,6 +294,12 @@ void drawTimerDataSetting(int curTimer){
   myGLCD->printNumI(runningTimer->secMod[curTimer],245,110,2,'0');
 }
 
+void drawRpmDataSetting(int curTimer){
+  int val;
+  val = rpm->rpmMod[curTimer];
+  myGLCD->printNumI(rpm->rpmTab[val],128,110,4,'0');
+}
+
 void drawButton(int mode){
   if(mode == ON)
     buttonOnOff->drawBitmp(button_on);
@@ -247,4 +311,12 @@ void drawSaved(int curTimer){
   delay(2000);
   text3->drawText("            ",arial_normal,CENTER);
   drawTimerDataSetting(curTimer);
+}
+
+void drawSavedRpm(int curTimer){
+  text3->drawText(" --Saved -- ",arial_normal,CENTER);
+  delay(2000);
+  text3->drawText("            ",arial_normal,CENTER);
+  rpm->drawText("   RPM:",arial_normal,LEFT);
+  drawRpmDataSetting(curTimer);
 }

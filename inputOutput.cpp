@@ -31,6 +31,16 @@ void eepReadTimer(char *tab,char sizeTab,char addr){
   }
 }
 
+void eepWriteRpm(char rpmtab,char addr){
+  EEPROM.write(addr,rpmtab);
+}
+
+int eepReadRpm(char addr){
+  int val;
+  val = EEPROM.read(addr);
+  return val;
+}
+
 int readInput(int X,int n,int S){
 int val;
 
@@ -67,6 +77,13 @@ char magicVal;
     eepWriteTimer(NIGHT_TIMER,AD_NIGHT_TIMER);
     eepWriteTimer(MORNING_TIMER,AD_MORNING_TIMER);
     eepWriteTimer(NO_TIMER,AD_NO_TIMER);
+    eepWriteRpm(SPEED1,AD_RPM_SPEED1_TIMER);
+    eepWriteRpm(SPEED2,AD_RPM_SPEED2_TIMER);
+    eepWriteRpm(SPEED3,AD_RPM_SPEED3_TIMER);
+    eepWriteRpm(SPEED4,AD_RPM_SPEED4_TIMER);
+    eepWriteRpm(SPEED5,AD_RPM_SPEED5_TIMER);
+    eepWriteRpm(SPEED6,AD_RPM_SPEED6_TIMER);
+    eepWriteRpm(CLEAN,AD_RPM_CLEAN_TIMER);
     // write magic valuue in EEPROM
     EEPROM.write(AD_MAGIC_VALUE,MAGIC_VALUE);
   }

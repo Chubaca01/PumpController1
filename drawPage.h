@@ -4,17 +4,23 @@
   void drawSpeedPage1();
   void drawSpeedPage2();
   void drawSetupPage();
+  void drawRemotePage();
   void drawQuickCleanPage();
   void drawResetTimerData();
-  void drawRpm(int type,int curTimer);
+  void drawRpm(int curTimer);
   void drawBoostPage();
   void drawTimerSetup(int curTimer);
+  void drawRpmSetup(int curTimer);
   void drawSpeedPage(int speed);
-  void drawContentSetup();
+  void drawContentSetupTimer();
+  void drawContentSetupRpm();
   void drawTimerDataSetting(int curTimer);
+  void drawRpmDataSetting(int curTimer);
   void drawTimerData(int curTimer);
   void drawButton(int mode);
   void drawSaved(int curTimer);
+  void drawSavedRpm(int curTimer);
+  void drawRpmRemoteData();
 
   // Page1 home page external
   extern pageObject *headerPage1;
@@ -47,6 +53,9 @@
   extern pageObject *headerPage6;
   extern pageObject *headerPage7;
 
+  // remote page
+  extern pageObject *headerPage8;
+
   // bottom navigation bar
   extern pageObject *buttonOnOff;
   extern pageObject *buttonHome1;
@@ -68,5 +77,8 @@
   extern pageObject *text1;
   extern pageObject *text2;
   extern pageObject *text0;
+
+// rpm 0bject
+  extern pageObject *rpm;
 
 #endif
