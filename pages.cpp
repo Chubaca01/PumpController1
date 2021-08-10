@@ -112,11 +112,24 @@ void pageObject::rpmDown(int cur){
   if (rpmMod[cur] > 1)
     rpmMod[cur] = rpmMod[cur]-1;
 }
+void pageObject::boostUp(){
+  if (boostDelayMod < 60)
+    boostDelayMod +=1;
+}
+void pageObject::boostDown(){
+  if (boostDelayMod > 1)
+    boostDelayMod -=1;
+}
 
 void pageObject::saveRpm(char addr,int timer){
   rpm[timer] = rpmMod[timer];
   DebugValPrintln(rpm[timer]);
   eepWriteRpm(rpmMod[timer],addr);
+}
+
+void pageObject::saveBoostDelay(char addr){
+  boostDelay = boostDelayMod;
+  eepWriteBoostDelay(addr,boostDelay);
 }
 // function call
 void erasePage(){

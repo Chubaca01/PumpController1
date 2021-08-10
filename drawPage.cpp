@@ -33,6 +33,7 @@
   pageObject *headerPage4;
   pageObject *quickCleanTimerButton;
   pageObject *speedTimerButton;
+  pageObject *boostDelayButton;
 
   // Page5 Boost pump
   pageObject *headerPage5;
@@ -43,6 +44,10 @@
 
   // remote page
   pageObject *headerPage8;
+
+  // boost pump delay setting page
+  pageObject *headerPage9;
+  pageObject *boostDelayObj;
 
   // bottom navigation bar
   pageObject *buttonOnOff;
@@ -127,6 +132,7 @@ void drawSetupPage(){
   headerPage4->drawHeader();
   quickCleanTimerButton->drawButton();
   speedTimerButton->drawButton();
+  boostDelayButton->drawButton();
   buttonHome1->setPos(POS_MIDDLE);
   buttonHome1->drawBitmp(button_home);
   buttonPrev->drawBitmp(prev);
@@ -149,6 +155,18 @@ void drawRemotePage(){
   buttonHome1->drawBitmp(button_home);
   buttonPrev->drawBitmp(prev);
   drawRpmRemoteData();
+}
+
+void drawBoostDelayPage(){
+  headerPage9->drawHeader();
+  boostDelayObj->drawText(" Delay:",arial_normal,LEFT);
+  up2->drawBitmp(up);
+  down2->drawBitmp(down);
+  drawBoostDelayDataSetting();
+  buttonHome1->setPos(POS_RIGHT);
+  buttonSave->drawBitmp(save);
+  buttonHome1->drawBitmp(button_home);
+  buttonPrev->drawBitmp(prev);
 }
 
 void drawContentRunning(){
@@ -300,6 +318,11 @@ void drawRpmDataSetting(int curTimer){
   myGLCD->printNumI(rpm->rpmTab[val],128,110,4,'0');
 }
 
+void drawBoostDelayDataSetting(){
+  int val;
+  val = (int) boostDelayObj->boostDelayMod;
+  myGLCD->printNumI(val,145,110,2,'0');
+}
 void drawButton(int mode){
   if(mode == ON)
     buttonOnOff->drawBitmp(button_on);
@@ -319,4 +342,11 @@ void drawSavedRpm(int curTimer){
   text3->drawText("            ",arial_normal,CENTER);
   rpm->drawText("   RPM:",arial_normal,LEFT);
   drawRpmDataSetting(curTimer);
+}
+void drawSavedBoostDelay(){
+  text3->drawText(" --Saved -- ",arial_normal,CENTER);
+  delay(2000);
+  text3->drawText("            ",arial_normal,CENTER);
+  boostDelayObj->drawText(" Delay:",arial_normal,LEFT);
+  drawBoostDelayDataSetting();
 }

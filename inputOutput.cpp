@@ -41,6 +41,15 @@ int eepReadRpm(char addr){
   return val;
 }
 
+int eeReadBoostDelay(char addr){
+  int val;
+  val = EEPROM.read(addr);
+  return val;
+}
+void eepWriteBoostDelay(char addr,char val){
+  EEPROM.write(addr,val);
+}
+
 int readInput(int X,int n,int S){
 int val;
 
@@ -84,6 +93,10 @@ char magicVal;
     eepWriteRpm(SPEED5,AD_RPM_SPEED5_TIMER);
     eepWriteRpm(SPEED6,AD_RPM_SPEED6_TIMER);
     eepWriteRpm(CLEAN,AD_RPM_CLEAN_TIMER);
+
+    // save boost delay
+    eepWriteBoostDelay(AD_BOOST_DELAY,BOOST_DELAY_VAL);
+
     // write magic valuue in EEPROM
     EEPROM.write(AD_MAGIC_VALUE,MAGIC_VALUE);
   }

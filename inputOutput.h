@@ -6,5 +6,7 @@
   void checkEepromWrite();
   int readInput(int X,int n,int S);
   int eepReadRpm(char addr);
+  int eeReadBoostDelay(char addr);
+  void eepWriteBoostDelay(char addr,char val);
   //void readInputAndUpdate();
 #endif

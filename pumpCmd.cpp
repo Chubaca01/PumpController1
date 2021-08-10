@@ -107,10 +107,16 @@ int getRpm(){
 }
 
 void boostCmd(char bCmd){
+  int val;
   if (bCmd == BOOST_ON)
     {
-      // run pump
-      pumpCmd(CMD_START_CLEAN);
+      val  = getRpm();
+      if (val == NO_RPM){
+        // run pump
+        pumpCmd(CMD_START_CLEAN);
+        val = boostDelayObj->getboostDelay();
+        delay(val);
+      }
       // start boost pump
       digitalWrite(BP,LOW);
       return;

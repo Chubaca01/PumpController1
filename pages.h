@@ -8,6 +8,8 @@
       int isblink;
 
     public:
+    unsigned char boostDelay;
+    unsigned char boostDelayMod;
     char rpm[10];
     char rpmMod[10];
     int rpmTab[10];
@@ -24,6 +26,12 @@
     void initModVal(int cur){rpmMod[cur]=rpm[cur];};
     void rpmUp(int cur);
     void rpmDown(int cur);
+    void initBoostDelay(char boostVal){boostDelay= boostVal; boostDelayMod = boostVal;};
+    void initModBoost(void){boostDelayMod = boostDelay;}
+    void boostUp(void);
+    void boostDown(void);
+    void saveBoostDelay(char addr);
+    unsigned int getboostDelay(void){unsigned int val; val = boostDelay*1000;return val;};
     void saveRpm(char addr,int timer);
     void drawButton(void);
     void drawHeader(void);

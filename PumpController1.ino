@@ -228,6 +228,11 @@ void loop() {
         currentPage = SSPEED1;
         break;
       }
+      if (boostDelayButton->isButtonPushed(x,y)){
+        erasePage();
+        drawBoostDelayPage();
+        currentPage = BOOST_DELAY;
+      }
       if (buttonHome1->isButtonPushed(x,y)){
         goHomePage();
         break;
@@ -260,6 +265,32 @@ void loop() {
           goHomePage();
           break;
         }
+    break;
+    case BOOST_DELAY:
+      if (up2->isButtonPushed(x,y)){
+        boostDelayObj->boostUp();
+        drawBoostDelayDataSetting();
+        break;
+      }
+      if (down2->isButtonPushed(x,y)){
+        boostDelayObj->boostDown();
+        drawBoostDelayDataSetting();
+        break;
+      }
+      if (buttonSave->isButtonPushed(x,y)){
+        boostDelayObj->saveBoostDelay(AD_BOOST_DELAY);
+        drawSavedBoostDelay();
+      }
+      if (buttonHome1->isButtonPushed(x,y)){
+       goHomePage();
+       break;
+      }
+      if (buttonPrev->isButtonPushed(x,y)){
+        erasePage();
+        drawSetupPage();
+        currentPage = SETUP;
+        break;
+      }
     break;
     case DREMOTE:
     if (buttonOnOff->isButtonPushed(x,y)){

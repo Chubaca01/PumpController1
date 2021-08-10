@@ -98,7 +98,7 @@ void initPages(){
   headerPage4 = new pageObject("Setup",10,32);
   quickCleanTimerButton =new pageObject("Quick Timer",AXIS_1);
   speedTimerButton = new pageObject("Speeds Timer",AXIS_2);
-
+  boostDelayButton = new pageObject("Boost Delay",AXIS_3);
   // Boost pump header
   headerPage5  = new pageObject("Booter Pump",10,32);
 
@@ -108,6 +108,10 @@ void initPages(){
 
   // remote page
   headerPage8 = new pageObject("-- Remote --",10,32);
+
+  // boost pump delay setting page
+  headerPage9 = new pageObject("-- Boost Delay --",10,32);
+  boostDelayObj = new pageObject(110,0);
 
   // bottom navigation bar
   buttonOnOff= new pageObject(POS_RIGHT);
@@ -160,6 +164,11 @@ void initTimer(char addr)
   runningTimer->init(TimerVal[0],TimerVal[1],TimerVal[2],TimerVal[3]);
 }
 
+void initBoostDelay(char addr){
+  int val;
+  val = eeReadBoostDelay(addr);
+  boostDelayObj->initBoostDelay(val);
+}
 void initAllTimer(){
   runningTimer = new pumpTimer();
   // init loop timer 1 second
@@ -175,6 +184,7 @@ void initAllTimer(){
   initTimer(AD_MORNING_TIMER);
   initTimer(AD_NIGHT_TIMER);
   initTimer(AD_NO_TIMER);
+  initBoostDelay(AD_BOOST_DELAY);
   timer1Sec->start(); //start the ticker.
 }
 

@@ -21,6 +21,9 @@
   void drawSaved(int curTimer);
   void drawSavedRpm(int curTimer);
   void drawRpmRemoteData();
+  void drawBoostDelayPage();
+  void drawBoostDelayDataSetting();
+  void drawSavedBoostDelay();
 
   // Page1 home page external
   extern pageObject *headerPage1;
@@ -45,6 +48,7 @@
   extern pageObject *headerPage4;
   extern pageObject *quickCleanTimerButton;
   extern pageObject *speedTimerButton;
+  extern pageObject *boostDelayButton;
 
   // Page5 Boost pump
   extern pageObject *headerPage5;
@@ -55,6 +59,11 @@
 
   // remote page
   extern pageObject *headerPage8;
+
+  // boost pump delay setting page
+  extern pageObject *headerPage9;
+  extern pageObject *boostDelayObj;
+
 
   // bottom navigation bar
   extern pageObject *buttonOnOff;

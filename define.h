@@ -34,12 +34,13 @@
  #define AD_RPM_SPEED5_TIMER  0x30  // 1 bytes
  #define AD_RPM_SPEED6_TIMER  0x31  // 1 bytes
  #define AD_RPM_CLEAN_TIMER   0x32  // 1 bytes
+ #define AD_BOOST_DELAY       0x33  // 1 bytes
 
  #define TIMER_TAB_SIZE 20
 
 
  // magic value
- #define MAGIC_VALUE 66
+ #define MAGIC_VALUE 67
  // screen defintion
  #define SETTING_SCREEN ILI9341_16,38,39,40,41
  #define SETTING_TOUCH 6, 5, 4, 3, 2
@@ -74,6 +75,7 @@
  #define QRSETUP_SPEED6 27
  #define DREMOTE 28
  #define BOOST_PUMP 29
+ #define BOOST_DELAY 30
 
 
  #define ON 1
@@ -159,5 +161,8 @@
  #define SPEED5_TIMER SPEED5,0,30,0
  #define SPEED6_TIMER SPEED6,0,30,0
  #define CLEAN_TIMER CLEAN,0,30,00
+
+ // booster pump delay sec
+ #define BOOST_DELAY_VAL   10
 
 #endif
