@@ -13,7 +13,7 @@
   extern UTFT    *myGLCD; //Parameters for Arduiono Mega with Extention Board.
   extern URTouch *myTouch;
   extern Ticker *timer1Sec;
-
+  extern Ticker *timerDelay;
   extern int sw_pos[];
   extern int currentPage;
   extern int buttonState;

@@ -4,6 +4,7 @@
   void drawSpeedPage1();
   void drawSpeedPage2();
   void drawSetupPage();
+  void drawSetupPage2();
   void drawRemotePage();
   void drawQuickCleanPage();
   void drawResetTimerData();
@@ -49,6 +50,7 @@
   extern pageObject *quickCleanTimerButton;
   extern pageObject *speedTimerButton;
   extern pageObject *boostDelayButton;
+  extern pageObject *rpmSpeedButton;
 
   // Page5 Boost pump
   extern pageObject *headerPage5;

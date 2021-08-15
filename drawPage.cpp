@@ -34,6 +34,7 @@
   pageObject *quickCleanTimerButton;
   pageObject *speedTimerButton;
   pageObject *boostDelayButton;
+  pageObject *rpmSpeedButton;
 
   // Page5 Boost pump
   pageObject *headerPage5;
@@ -136,12 +137,22 @@ void drawSetupPage(){
   buttonHome1->setPos(POS_MIDDLE);
   buttonHome1->drawBitmp(button_home);
   buttonPrev->drawBitmp(prev);
+  buttonNext->drawBitmp(next);
 }
-
+void drawSetupPage2(){
+  setupButton->eraseButton();
+  headerPage4->drawHeader();
+  rpmSpeedButton->drawButton();
+  buttonHome1->setPos(POS_MIDDLE);
+  buttonHome1->drawBitmp(button_home);
+  buttonPrev->drawBitmp(prev);
+}
 void drawRpmRemoteData(){
+  int val;
   // display RPM data
   myGLCD->setColor(TEXT_COLOR); // Sets color to white
-  myGLCD->printNumI(rpm->curRemoteRpm,139,80,4,'0');
+  val = rpm->curRemoteRpm;
+  myGLCD->printNumI(rpm->rpmTab[val],139,80,4,'0');
 }
 
 void drawRemotePage(){

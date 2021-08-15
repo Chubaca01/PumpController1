@@ -10,6 +10,7 @@
 #include <pumpTimer.h>
 #include <InputOutput.h>
 #include <message.h>
+#include <pumpCmd.h>
 
 /*
 
@@ -18,7 +19,7 @@
 UTFT * myGLCD;
 URTouch * myTouch;
 Ticker * timer1Sec;
-
+Ticker * timerDelay;
 // To memorise switch positon
 int sw_pos[4];
 
@@ -99,6 +100,7 @@ void initPages(){
   quickCleanTimerButton =new pageObject("Quick Timer",AXIS_1);
   speedTimerButton = new pageObject("Speeds Timer",AXIS_2);
   boostDelayButton = new pageObject("Boost Delay",AXIS_3);
+  rpmSpeedButton = new pageObject("Rpm Speed",AXIS_1);
   // Boost pump header
   headerPage5  = new pageObject("Booter Pump",10,32);
 
@@ -139,21 +141,21 @@ void initPages(){
 void initRpm() {
 rpm = new pageObject(110,0);
 rpm->initRpm(NO_T,0);
-rpm->initRpm(CLEAN,eepReadRpm(AD_RPM_CLEAN_TIMER));
-rpm->initRpm(SPEED1,eepReadRpm(AD_RPM_SPEED1_TIMER));
-rpm->initRpm(SPEED2,eepReadRpm(AD_RPM_SPEED2_TIMER));
-rpm->initRpm(SPEED3,eepReadRpm(AD_RPM_SPEED3_TIMER));
-rpm->initRpm(SPEED4,eepReadRpm(AD_RPM_SPEED4_TIMER));
-rpm->initRpm(SPEED5,eepReadRpm(AD_RPM_SPEED5_TIMER));
-rpm->initRpm(SPEED6,eepReadRpm(AD_RPM_SPEED6_TIMER));
-rpm->rpmTab[0] = NO_RPM;
-rpm->rpmTab[1] = RPM_SPEED1;
-rpm->rpmTab[2] = RPM_SPEED2;
-rpm->rpmTab[3] = RPM_SPEED3;
-rpm->rpmTab[4] = RPM_SPEED4;
-rpm->rpmTab[5] = RPM_SPEED5;
-rpm->rpmTab[6] = RPM_SPEED6;
-rpm->rpmTab[7] = RPM_CLEAN;
+rpm->initRpm(CLEAN,eepReadRpmTimer(AD_RPM_CLEAN_TIMER));
+rpm->initRpm(SPEED1,eepReadRpmTimer(AD_RPM_SPEED1_TIMER));
+rpm->initRpm(SPEED2,eepReadRpmTimer(AD_RPM_SPEED2_TIMER));
+rpm->initRpm(SPEED3,eepReadRpmTimer(AD_RPM_SPEED3_TIMER));
+rpm->initRpm(SPEED4,eepReadRpmTimer(AD_RPM_SPEED4_TIMER));
+rpm->initRpm(SPEED5,eepReadRpmTimer(AD_RPM_SPEED5_TIMER));
+rpm->initRpm(SPEED6,eepReadRpmTimer(AD_RPM_SPEED6_TIMER));
+rpm->rpmTab[NO_RPM_ID] = NO_RPM;
+rpm->rpmTab[RPM_SPEED1_ID] = eepReadRpm(AD_RPM_SPEED1);
+rpm->rpmTab[RPM_SPEED2_ID] = eepReadRpm(AD_RPM_SPEED2);
+rpm->rpmTab[RPM_SPEED3_ID] = eepReadRpm(AD_RPM_SPEED3);
+rpm->rpmTab[RPM_SPEED4_ID] = eepReadRpm(AD_RPM_SPEED4);
+rpm->rpmTab[RPM_SPEED5_ID] = eepReadRpm(AD_RPM_SPEED5);
+rpm->rpmTab[RPM_SPEED6_ID] = eepReadRpm(AD_RPM_SPEED6);
+rpm->rpmTab[RPM_CLEAN_ID] = eepReadRpm(AD_RPM_CLEAN);
 sMessage->sendMessage(CHECK_INPUT_VALUES);
 }
 
@@ -173,6 +175,7 @@ void initAllTimer(){
   runningTimer = new pumpTimer();
   // init loop timer 1 second
   timer1Sec = new Ticker(updateTimer, 1000);
+  timerDelay = new Ticker(checkPumpDelay, 1000);
 
   initTimer(AD_SPEED1_TIMER);
   initTimer(AD_SPEED2_TIMER);
@@ -186,6 +189,7 @@ void initAllTimer(){
   initTimer(AD_NO_TIMER);
   initBoostDelay(AD_BOOST_DELAY);
   timer1Sec->start(); //start the ticker.
+  timerDelay->start();
 }
 
 void initMessages(){

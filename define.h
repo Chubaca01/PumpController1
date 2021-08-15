@@ -35,12 +35,19 @@
  #define AD_RPM_SPEED6_TIMER  0x31  // 1 bytes
  #define AD_RPM_CLEAN_TIMER   0x32  // 1 bytes
  #define AD_BOOST_DELAY       0x33  // 1 bytes
+ #define AD_RPM_SPEED1        0x34  // 2 bytes
+ #define AD_RPM_SPEED2        0x36  // 2 bytes
+ #define AD_RPM_SPEED3        0x38  // 2 bytes
+ #define AD_RPM_SPEED4        0x3A  // 2 bytes
+ #define AD_RPM_SPEED5        0x3C  // 2 bytes
+ #define AD_RPM_SPEED6        0x3E  // 2 bytes
+ #define AD_RPM_CLEAN         0x40  // 2 bytes
 
  #define TIMER_TAB_SIZE 20
 
 
  // magic value
- #define MAGIC_VALUE 67
+ #define MAGIC_VALUE 72
  // screen defintion
  #define SETTING_SCREEN ILI9341_16,38,39,40,41
  #define SETTING_TOUCH 6, 5, 4, 3, 2
@@ -76,6 +83,7 @@
  #define DREMOTE 28
  #define BOOST_PUMP 29
  #define BOOST_DELAY 30
+ #define SETUP_2 31
 
 
  #define ON 1
@@ -107,20 +115,20 @@
  #define POS_CENTER 135,85,185,135
 
  // message detype definition
- #define NO_MESSAGE 0
- #define CLEAN_TIMER_STOPPED 1
- #define SPEED_TIMER_STOPPED 2
- #define CMD_START_CLEAN 3
- #define CMD_START_SPEED1 4
- #define CMD_START_SPEED2 5
- #define CMD_START_SPEED3 6
- #define CMD_START_SPEED4 7
- #define CMD_START_SPEED5 8
- #define CMD_START_SPEED6 9
- #define CMD_STOP_PUMP 10
- #define CHECK_INPUT_VALUES 11
- #define BOOST_ON 12
- #define BOOST_OFF 13
+ #define NO_MESSAGE 100
+ #define CLEAN_TIMER_STOPPED 101
+ #define SPEED_TIMER_STOPPED 102
+ #define CMD_START_CLEAN 103
+ #define CMD_START_SPEED1 104
+ #define CMD_START_SPEED2 105
+ #define CMD_START_SPEED3 106
+ #define CMD_START_SPEED4 107
+ #define CMD_START_SPEED5 108
+ #define CMD_START_SPEED6 109
+ #define CMD_STOP_PUMP 110
+ #define CHECK_INPUT_VALUES 111
+ #define BOOST_ON 112
+ #define BOOST_OFF 113
 
 
 // rpm value
@@ -132,6 +140,20 @@
  #define RPM_SPEED4   2200
  #define RPM_SPEED5   2900
  #define RPM_SPEED6   3000
+
+ #define RPM_REMOTE   0000
+
+ #define RPM_MAX 3250
+ #define RPM_MIN 600
+ // rpm ID
+ #define NO_RPM_ID       0
+ #define RPM_SPEED1_ID   1
+ #define RPM_SPEED2_ID   2
+ #define RPM_SPEED3_ID   3
+ #define RPM_SPEED4_ID   4
+ #define RPM_SPEED5_ID   5
+ #define RPM_SPEED6_ID   6
+ #define RPM_CLEAN_ID   7
 
  #define RPM_REMOTE   0000
 

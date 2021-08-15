@@ -108,23 +108,36 @@ void pageObject::rpmUp(int cur){
   if (rpmMod[cur] < MAX_RPM)
     rpmMod[cur] = rpmMod[cur]+1;
 }
+
 void pageObject::rpmDown(int cur){
   if (rpmMod[cur] > 1)
     rpmMod[cur] = rpmMod[cur]-1;
 }
+
 void pageObject::boostUp(){
   if (boostDelayMod < 60)
     boostDelayMod +=1;
 }
+
 void pageObject::boostDown(){
   if (boostDelayMod > 1)
     boostDelayMod -=1;
 }
 
+void pageObject::rpmTabup(int cur){
+  if (rpmTabMod[cur] < RPM_MAX)
+    rpmTabMod[cur] = rpmTabMod[cur]+50;
+}
+
+void pageObject::rpmTabDown(int cur){
+  if (rpmTabMod[cur] > RPM_MIN)
+    rpmTabMod[cur] = rpmTabMod[cur]-50;
+}
+
 void pageObject::saveRpm(char addr,int timer){
   rpm[timer] = rpmMod[timer];
   DebugValPrintln(rpm[timer]);
-  eepWriteRpm(rpmMod[timer],addr);
+  eepWriteRpmTimer(rpmMod[timer],addr);
 }
 
 void pageObject::saveBoostDelay(char addr){

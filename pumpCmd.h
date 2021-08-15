@@ -4,4 +4,8 @@
   int getRpm();
   void boostCmd(char bCmd);
   int checkBoostState();
+  void initPumpDelay();
+  void checkPumpDelay();
+  void startBoostBump();
+  void stopPumpDelay();
 #endif

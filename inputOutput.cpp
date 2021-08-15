@@ -31,13 +31,38 @@ void eepReadTimer(char *tab,char sizeTab,char addr){
   }
 }
 
-void eepWriteRpm(char rpmtab,char addr){
+void eepWriteRpmTimer(char rpmtab,char addr){
   EEPROM.write(addr,rpmtab);
 }
 
-int eepReadRpm(char addr){
+int eepReadRpmTimer(char addr){
   int val;
   val = EEPROM.read(addr);
+  return val;
+}
+
+void eepWriteRpm(int rpm,char addr){
+  char val;
+
+  // save high value
+  val = (char) (rpm / 100);
+  EEPROM.write(addr,val);
+  addr++;
+  // save low value
+  val = (char) (rpm % 100);
+  EEPROM.write(addr, val);
+}
+
+int eepReadRpm(char addr){
+  int val,val1;
+  // read high value
+  val = EEPROM.read(addr) * 100;
+  addr++;
+  val1 = EEPROM.read(addr);
+  // read lower value
+  val = val + val1;
+
+  DebugValPrintln(val);
   return val;
 }
 
@@ -86,14 +111,20 @@ char magicVal;
     eepWriteTimer(NIGHT_TIMER,AD_NIGHT_TIMER);
     eepWriteTimer(MORNING_TIMER,AD_MORNING_TIMER);
     eepWriteTimer(NO_TIMER,AD_NO_TIMER);
-    eepWriteRpm(SPEED1,AD_RPM_SPEED1_TIMER);
-    eepWriteRpm(SPEED2,AD_RPM_SPEED2_TIMER);
-    eepWriteRpm(SPEED3,AD_RPM_SPEED3_TIMER);
-    eepWriteRpm(SPEED4,AD_RPM_SPEED4_TIMER);
-    eepWriteRpm(SPEED5,AD_RPM_SPEED5_TIMER);
-    eepWriteRpm(SPEED6,AD_RPM_SPEED6_TIMER);
-    eepWriteRpm(CLEAN,AD_RPM_CLEAN_TIMER);
-
+    eepWriteRpmTimer(SPEED1,AD_RPM_SPEED1_TIMER);
+    eepWriteRpmTimer(SPEED2,AD_RPM_SPEED2_TIMER);
+    eepWriteRpmTimer(SPEED3,AD_RPM_SPEED3_TIMER);
+    eepWriteRpmTimer(SPEED4,AD_RPM_SPEED4_TIMER);
+    eepWriteRpmTimer(SPEED5,AD_RPM_SPEED5_TIMER);
+    eepWriteRpmTimer(SPEED6,AD_RPM_SPEED6_TIMER);
+    eepWriteRpmTimer(CLEAN,AD_RPM_CLEAN_TIMER);
+    eepWriteRpm(RPM_SPEED1,AD_RPM_SPEED1);
+    eepWriteRpm(RPM_SPEED2,AD_RPM_SPEED2);
+    eepWriteRpm(RPM_SPEED3,AD_RPM_SPEED3);
+    eepWriteRpm(RPM_SPEED4,AD_RPM_SPEED4);
+    eepWriteRpm(RPM_SPEED5,AD_RPM_SPEED5);
+    eepWriteRpm(RPM_SPEED6,AD_RPM_SPEED6);
+    eepWriteRpm(RPM_CLEAN,AD_RPM_CLEAN);
     // save boost delay
     eepWriteBoostDelay(AD_BOOST_DELAY,BOOST_DELAY_VAL);
 

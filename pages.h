@@ -10,9 +10,12 @@
     public:
     unsigned char boostDelay;
     unsigned char boostDelayMod;
+    unsigned char boostDelayCount;
+    char boostDelayFlag;
     char rpm[10];
     char rpmMod[10];
     int rpmTab[10];
+    int rpmTabMod[10];
     int curRemoteRpm;
     // constructor button
     pageObject(char *t,int px1,int py1,int px2,int py2,int px3){strcpy(tText,t);text=&tText[0];posx1=px1;posy1=py1;posx2=px2;posy2=py2;post=px3;isBitmap=0;isblink=0;}
@@ -24,9 +27,12 @@
     pageObject(int px1,int py1,int px2,int py2){text=&tText[0];posx1=px1;posy1=py1;posx2=px2;posy2=py2;isBitmap=1;isblink=0;};
     void initRpm(unsigned char cur,char rpmVal){rpm[cur]=rpmVal;rpmMod[cur]=rpmVal;curRemoteRpm=0;};
     void initModVal(int cur){rpmMod[cur]=rpm[cur];};
+    void initRpmTabMod(char cur){rpmTabMod[cur] = rpmTab[cur];};
     void rpmUp(int cur);
     void rpmDown(int cur);
-    void initBoostDelay(char boostVal){boostDelay= boostVal; boostDelayMod = boostVal;};
+    void rpmTabup(int cur);
+    void rpmTabDown(int cur);
+    void initBoostDelay(char boostVal){boostDelay= boostVal; boostDelayMod = boostVal;boostDelayCount= 0; boostDelayFlag=0;};
     void initModBoost(void){boostDelayMod = boostDelay;}
     void boostUp(void);
     void boostDown(void);

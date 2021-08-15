@@ -8,6 +8,7 @@
 #include "debug.h"
 #include "pumpTimer.h"
 #include "message.h"
+#include "pumpCmd.h"
 
 void ExecPumpCmd(char val1,int val2,int val3){
     digitalWrite(S3,val3);
@@ -26,34 +27,38 @@ void pumpCmd(int tCmd){
     int val;
     if (tCmd == CMD_START_SPEED1){
       val = rpm->rpm[SPEED1];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED2){
       val = rpm->rpm[SPEED2];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED3){
       val = rpm->rpm[SPEED3];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED4){
       val = rpm->rpm[SPEED4];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED5){
       val = rpm->rpm[SPEED5];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_SPEED6){
       val = rpm->rpm[SPEED6];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd == CMD_START_CLEAN){
       val = rpm->rpm[CLEAN];
-      val = rpm->rpmTab[val];
+      //val = rpm->rpmTab[val];
     }
     else if (tCmd== CMD_STOP_PUMP){
       DebugPrintln("pump stopped");
+      stopPumpDelay();
+      // stop boost pump
+      digitalWrite(BP,HIGH);
+      // stop pump;
       ExecPumpCmd(HIGH,HIGH,HIGH);
       return;
     }
@@ -61,25 +66,25 @@ void pumpCmd(int tCmd){
       val = tCmd;
     }
     switch (val) {
-      case RPM_SPEED1:
+      case RPM_SPEED1_ID:
         ExecPumpCmd(LOW,HIGH,HIGH);
       break;
-      case RPM_SPEED2:
+      case RPM_SPEED2_ID:
         ExecPumpCmd(HIGH,LOW,HIGH);
       break;
-      case RPM_SPEED3:
+      case RPM_SPEED3_ID:
         ExecPumpCmd(LOW,LOW,HIGH);
       break;
-      case RPM_SPEED4:
+      case RPM_SPEED4_ID:
         ExecPumpCmd(HIGH,HIGH,LOW);
       break;
-      case RPM_SPEED5:
+      case RPM_SPEED5_ID:
         ExecPumpCmd(LOW,HIGH,LOW);
       break;
-      case RPM_SPEED6:
+      case RPM_SPEED6_ID:
         ExecPumpCmd(HIGH,LOW,LOW);
       break;
-      case RPM_CLEAN:
+      case RPM_CLEAN_ID:
         ExecPumpCmd(LOW,LOW,LOW);
       break;
     }
@@ -87,38 +92,36 @@ void pumpCmd(int tCmd){
 
 int getRpm(){
   if ((sw_pos[1] == HIGH) && (sw_pos[2] == HIGH) && (sw_pos[3]== HIGH)){
-      return NO_RPM;
+      return NO_RPM_ID;
   }else if ((sw_pos[1] == LOW) && (sw_pos[2] == HIGH) && (sw_pos[3]== HIGH)){
-      return RPM_SPEED1;
+      return RPM_SPEED1_ID;
   }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
-      return RPM_SPEED2;
+      return RPM_SPEED2_ID;
   }else if ((sw_pos[1] == LOW) && (sw_pos[2] == LOW) && (sw_pos[3]== HIGH)){
-      return RPM_SPEED3;
+      return RPM_SPEED3_ID;
   }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
-      return RPM_SPEED4;
+      return RPM_SPEED4_ID;
   }else if ((sw_pos[1] == LOW) && (sw_pos[2] == HIGH) && (sw_pos[3]== LOW)){
-      return RPM_SPEED5;
+      return RPM_SPEED5_ID;
   }else if ((sw_pos[1] == HIGH) && (sw_pos[2] == LOW) && (sw_pos[3]== LOW)){
-      return RPM_SPEED6;
+      return RPM_SPEED6_ID;
   }else if ((sw_pos[1] == LOW) && (sw_pos[2] == LOW) && (sw_pos[3]== LOW)){
-      return RPM_CLEAN;
+      return RPM_CLEAN_ID;
   }
-  return NO_RPM;
+  return NO_RPM_ID;
 }
-
+void startBoostBump(){
+}
 void boostCmd(char bCmd){
   int val;
   if (bCmd == BOOST_ON)
     {
       val  = getRpm();
-      if (val == NO_RPM){
+      if (val == NO_RPM_ID){
         // run pump
         pumpCmd(CMD_START_CLEAN);
-        val = boostDelayObj->getboostDelay();
-        delay(val);
+        initPumpDelay();
       }
-      // start boost pump
-      digitalWrite(BP,LOW);
       return;
     }
   else if (bCmd == BOOST_OFF)
@@ -138,4 +141,28 @@ int val;
     return OFF;
   else
     return ON;
+}
+
+void checkPumpDelay(){
+    if (boostDelayObj->boostDelayFlag){
+      if (boostDelayObj->boostDelayCount == 0){
+        DebugPrint("Booster Start");
+        // start boost pump
+        digitalWrite(BP,LOW);
+        boostDelayObj->boostDelayFlag = 0;
+        boostDelayObj->boostDelayCount = 0;
+      }
+      else
+        boostDelayObj->boostDelayCount--;
+    }
+}
+
+void initPumpDelay(){
+  boostDelayObj->boostDelayCount = boostDelayObj->boostDelay;
+  boostDelayObj->boostDelayFlag = 1;
+}
+
+void stopPumpDelay(){
+  boostDelayObj->boostDelayFlag = 0;
+  boostDelayObj->boostDelayCount = 0;
 }

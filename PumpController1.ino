@@ -11,7 +11,7 @@
 #include "pumpCmd.h"
 #include "message.h"
 
-void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) );
+void checkRunningPage(int x,int y,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) );
 void checkSettingTimerPage(int x,int y,char curTimer,int bPrev,int bNext,void (*fDraw)(void),char addr);
 void checkSettingRpmPage(int x,int y,char curTimer,int bPrev,char addr);
 void checkMessage();
@@ -84,7 +84,7 @@ void loop() {
     }
     break;
     case QUICK_CLEAN:
-      checkRunningPage(x,y,RPM_CLEAN,CLEAN_TIMER,CLEAN_TIMER_STOPPED,HOME,drawHomePage);
+      checkRunningPage(x,y,CLEAN_TIMER,CLEAN_TIMER_STOPPED,HOME,drawHomePage);
     break;
     case PSPEED1:
     case SSPEED1:
@@ -241,6 +241,24 @@ void loop() {
          goHomePage();
          break;
       }
+      if (buttonNext->isButtonPushed(x,y)){
+         erasePage();
+         drawSetupPage2();
+         currentPage = SETUP_2;
+         break;
+      }
+    break;
+    case SETUP_2:
+      if (buttonHome1->isButtonPushed(x,y)){
+        goHomePage();
+        break;
+      }
+      if (buttonPrev->isButtonPushed(x,y)){
+        erasePage();
+        drawSetupPage();
+        currentPage = SETUP;
+        break;
+      }
     break;
     case BOOST_PUMP:
     if (buttonOnOff->isButtonPushed(x,y,button_on)){
@@ -325,22 +343,22 @@ void loop() {
       }
     break;
     case RSPEED1:
-      checkRunningPage(x,y,RPM_SPEED1,SPEED1_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
+      checkRunningPage(x,y,SPEED1_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
     break;
     case RSPEED2:
-      checkRunningPage(x,y,RPM_SPEED2,SPEED2_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
+      checkRunningPage(x,y,SPEED2_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
     break;
     case RSPEED3:
-      checkRunningPage(x,y,RPM_SPEED3,SPEED3_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
+      checkRunningPage(x,y,SPEED3_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
     break;
     case RSPEED4:
-      checkRunningPage(x,y,RPM_SPEED4,SPEED4_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
+      checkRunningPage(x,y,SPEED4_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
     break;
     case RSPEED5:
-      checkRunningPage(x,y,RPM_SPEED5,SPEED5_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
+      checkRunningPage(x,y,SPEED5_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
     break;
     case RSPEED6:
-      checkRunningPage(x,y,RPM_SPEED6,SPEED6_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
+      checkRunningPage(x,y,SPEED6_TIMER,SPEED_TIMER_STOPPED,PSPEED2,drawSpeedPage2);
     break;
     case QTSETUP_CLEAN:
       checkSettingTimerPage(x,y,CLEAN,SETUP,QRSETUP_CLEAN,drawSetupPage,AD_CLEAN_TIMER);
@@ -387,6 +405,7 @@ void loop() {
   }
   checkMessage();
   timer1Sec->update();
+  timerDelay->update();
 }
 
 
@@ -398,7 +417,7 @@ void goHomePage(){
 }
 
 // running page
-void checkRunningPage(int x,int y,int rpm,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) ){
+void checkRunningPage(int x,int y,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) ){
 
       if (buttonOnOff->isButtonPushed(x,y)||(force==FORCE_ON)){
         if (!buttonState){
@@ -557,7 +576,7 @@ int val;
       readInput(X3,3,S3);
       val = getRpm();
       rpm->curRemoteRpm = val;
-      if(val==NO_RPM){
+      if(val==NO_RPM_ID){
         if (currentPage != HOME){
           sendPumpMessage(NO_T);
           stopTimer(runningTimer->currentTimer);
