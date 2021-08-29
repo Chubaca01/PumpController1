@@ -115,6 +115,8 @@ void initPages(){
   headerPage9 = new pageObject("-- Boost Delay --",10,32);
   boostDelayObj = new pageObject(110,0);
 
+  // setup rpm speed page
+  headerPage10 = new pageObject("-- RPM Speed --",10,32);
   // bottom navigation bar
   buttonOnOff= new pageObject(POS_RIGHT);
   buttonHome1= new pageObject(POS_MIDDLE);

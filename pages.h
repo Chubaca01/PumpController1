@@ -30,7 +30,7 @@
     void initRpmTabMod(char cur){rpmTabMod[cur] = rpmTab[cur];};
     void rpmUp(int cur);
     void rpmDown(int cur);
-    void rpmTabup(int cur);
+    void rpmTabUp(int cur);
     void rpmTabDown(int cur);
     void initBoostDelay(char boostVal){boostDelay= boostVal; boostDelayMod = boostVal;boostDelayCount= 0; boostDelayFlag=0;};
     void initModBoost(void){boostDelayMod = boostDelay;}
@@ -39,6 +39,7 @@
     void saveBoostDelay(char addr);
     unsigned int getboostDelay(void){unsigned int val; val = boostDelay*1000;return val;};
     void saveRpm(char addr,int timer);
+    void saveRpmVal(char addr,char speedId);
     void drawButton(void);
     void drawHeader(void);
     void eraseHeader(void);

@@ -50,6 +50,9 @@
   pageObject *headerPage9;
   pageObject *boostDelayObj;
 
+  // rpm speed setting page
+  pageObject *headerPage10;
+
   // bottom navigation bar
   pageObject *buttonOnOff;
   pageObject *buttonHome1;
@@ -310,6 +313,14 @@ void drawContentSetupRpm(){
   buttonPrev->drawBitmp(prev);
 }
 
+void drawSetupRpmSpeed(char speedId){
+  // Title
+  headerPage10->drawHeader();
+  drawContentSetupRpm();
+  rpm->initRpmTabMod(speedId);
+  myGLCD->printNumI(rpm->rpmTab[speedId],128,110,4,'0');
+}
+
 void drawTimerData(int curTimer){
   text0->blinkText(arial_normal,CENTER);
   myGLCD->printNumI(runningTimer->hourMod[curTimer],110,125,2,'0');
@@ -328,7 +339,9 @@ void drawRpmDataSetting(int curTimer){
   val = rpm->rpmMod[curTimer];
   myGLCD->printNumI(rpm->rpmTab[val],128,110,4,'0');
 }
-
+void drawRpmDataSettingVal(char speedId){
+  myGLCD->printNumI(rpm->rpmTabMod[speedId],128,110,4,'0');
+}
 void drawBoostDelayDataSetting(){
   int val;
   val = (int) boostDelayObj->boostDelayMod;
@@ -353,6 +366,13 @@ void drawSavedRpm(int curTimer){
   text3->drawText("            ",arial_normal,CENTER);
   rpm->drawText("   RPM:",arial_normal,LEFT);
   drawRpmDataSetting(curTimer);
+}
+void drawSavedRpmVal(char speedId){
+  text3->drawText(" --Saved -- ",arial_normal,CENTER);
+  delay(2000);
+  text3->drawText("            ",arial_normal,CENTER);
+  rpm->drawText("   RPM:",arial_normal,LEFT);
+  drawRpmDataSettingVal(speedId);
 }
 void drawSavedBoostDelay(){
   text3->drawText(" --Saved -- ",arial_normal,CENTER);

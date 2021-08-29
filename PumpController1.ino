@@ -14,6 +14,7 @@
 void checkRunningPage(int x,int y,char curTimer,char h,char m,char s,char rMessage,int bPrev,void (*fDraw)(void) );
 void checkSettingTimerPage(int x,int y,char curTimer,int bPrev,int bNext,void (*fDraw)(void),char addr);
 void checkSettingRpmPage(int x,int y,char curTimer,int bPrev,char addr);
+void checkSettingRpmPageVal(int x,int y,char speedId,int bPrev,void (*fDraw)(void),char addr);
 void checkMessage();
 
 void setup() {
@@ -259,6 +260,11 @@ void loop() {
         currentPage = SETUP;
         break;
       }
+      if (rpmSpeedButton->isButtonPushed(x, y)){
+        erasePageHeader();
+        drawSpeedPage1();
+        currentPage = SETUP_RPM_SPEED_PAGE1;
+      }
     break;
     case BOOST_PUMP:
     if (buttonOnOff->isButtonPushed(x,y,button_on)){
@@ -342,6 +348,72 @@ void loop() {
        break;
       }
     break;
+    case SETUP_RPM_SPEED_PAGE1:
+      if (buttonPrev->isButtonPushed(x,y)){
+        erasePage();
+        drawSetupPage2();
+        currentPage = SETUP_2;
+        break;
+      }
+      if (buttonHome1->isButtonPushed(x,y)){
+       goHomePage();
+       break;
+      }
+      if (buttonNext->isButtonPushed(x,y)){
+         erasePage();
+         drawSpeedPage2();
+         currentPage = SETUP_RPM_SPEED_PAGE2;
+         break;
+      }
+      if (speedButton1->isButtonPushed(x,y)){
+         erasePage();
+         drawSetupRpmSpeed(RPM_SPEED1_ID);
+         currentPage = SETUP_RPM_SPEED1;
+         break;
+      }
+      if (speedButton2->isButtonPushed(x,y)){
+          erasePage();
+          drawSetupRpmSpeed(RPM_SPEED2_ID);
+          currentPage = SETUP_RPM_SPEED2;
+          break;
+      }
+      if (speedButton3->isButtonPushed(x,y)){
+          erasePage();
+          drawSetupRpmSpeed(RPM_SPEED3_ID);
+          currentPage = SETUP_RPM_SPEED3;
+          break;
+      }
+    break;
+    case SETUP_RPM_SPEED_PAGE2:
+      if (buttonPrev->isButtonPushed(x,y)){
+        erasePage();
+        drawSpeedPage1();
+        currentPage = SETUP_RPM_SPEED_PAGE1;
+        break;
+      }
+      if (buttonHome1->isButtonPushed(x,y)){
+       goHomePage();
+       break;
+      }
+      if (speedButton4->isButtonPushed(x,y)){
+         erasePage();
+         drawSetupRpmSpeed(RPM_SPEED4_ID);
+         currentPage = SETUP_RPM_SPEED4;
+         break;
+      }
+      if (speedButton5->isButtonPushed(x,y)){
+          erasePage();
+          drawSetupRpmSpeed(RPM_SPEED5_ID);
+          currentPage = SETUP_RPM_SPEED5;
+          break;
+      }
+      if (speedButton6->isButtonPushed(x,y)){
+          erasePage();
+          drawSetupRpmSpeed(RPM_SPEED6_ID);
+          currentPage = SETUP_RPM_SPEED6;
+          break;
+      }
+    break;
     case RSPEED1:
       checkRunningPage(x,y,SPEED1_TIMER,SPEED_TIMER_STOPPED,PSPEED1,drawSpeedPage1);
     break;
@@ -401,6 +473,24 @@ void loop() {
     break;
     case QRSETUP_SPEED6:
       checkSettingRpmPage(x,y,SPEED6,QTSETUP_SPEED6,AD_RPM_SPEED6_TIMER);
+    break;
+    case SETUP_RPM_SPEED1:
+      checkSettingRpmPageVal(x,y,RPM_SPEED1_ID,SETUP_RPM_SPEED_PAGE1,drawSpeedPage1,AD_RPM_SPEED1);
+    break;
+    case SETUP_RPM_SPEED2:
+      checkSettingRpmPageVal(x,y,RPM_SPEED2_ID,SETUP_RPM_SPEED_PAGE1,drawSpeedPage1,AD_RPM_SPEED2);
+    break;
+    case SETUP_RPM_SPEED3:
+      checkSettingRpmPageVal(x,y,RPM_SPEED3_ID,SETUP_RPM_SPEED_PAGE1,drawSpeedPage1,AD_RPM_SPEED3);
+    break;
+    case SETUP_RPM_SPEED4:
+      checkSettingRpmPageVal(x,y,RPM_SPEED4_ID,SETUP_RPM_SPEED_PAGE2,drawSpeedPage2,AD_RPM_SPEED4);
+    break;
+    case SETUP_RPM_SPEED5:
+      checkSettingRpmPageVal(x,y,RPM_SPEED5_ID,SETUP_RPM_SPEED_PAGE2,drawSpeedPage2,AD_RPM_SPEED5);
+    break;
+    case SETUP_RPM_SPEED6:
+      checkSettingRpmPageVal(x,y,RPM_SPEED6_ID,SETUP_RPM_SPEED_PAGE2,drawSpeedPage2,AD_RPM_SPEED6);
     break;
   }
   checkMessage();
@@ -541,7 +631,32 @@ void checkSettingRpmPage(int x,int y,char curTimer,int bPrev,char addr){
     drawSavedRpm(curTimer);
   }
 }
-
+void checkSettingRpmPageVal(int x,int y,char speedId,int bPrev,void (*fDraw)(void),char addr){
+  if (buttonHome1->isButtonPushed(x,y)){
+    goHomePage();
+    return;
+  }
+  if (buttonPrev->isButtonPushed(x,y)){
+    erasePage();
+    (*fDraw)();
+    currentPage = bPrev;
+    return;
+  }
+  if (up2->isButtonPushed(x,y)){
+    rpm->rpmTabUp(speedId);
+    drawRpmDataSettingVal(speedId);
+    return;
+  }
+  if (down2->isButtonPushed(x,y)){
+    rpm->rpmTabDown(speedId);
+    drawRpmDataSettingVal(speedId);
+    return;
+  }
+  if (buttonSave->isButtonPushed(x,y)){
+    rpm->saveRpmVal(addr,speedId);
+    drawSavedRpmVal(speedId);
+  }
+}
 void checkMessage(){
 char mes;
 int val;

@@ -25,6 +25,9 @@
   void drawBoostDelayPage();
   void drawBoostDelayDataSetting();
   void drawSavedBoostDelay();
+  void drawSetupRpmSpeed(char speedId);
+  void drawRpmDataSettingVal(char speedId);
+  void drawSavedRpmVal(char speedId);
 
   // Page1 home page external
   extern pageObject *headerPage1;
@@ -66,6 +69,8 @@
   extern pageObject *headerPage9;
   extern pageObject *boostDelayObj;
 
+  // rpm speed setting page
+  extern pageObject *headerPage10;
 
   // bottom navigation bar
   extern pageObject *buttonOnOff;

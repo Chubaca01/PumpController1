@@ -84,7 +84,14 @@
  #define BOOST_PUMP 29
  #define BOOST_DELAY 30
  #define SETUP_2 31
-
+ #define SETUP_RPM_SPEED_PAGE1 32
+ #define SETUP_RPM_SPEED_PAGE2 33
+ #define SETUP_RPM_SPEED1 34
+ #define SETUP_RPM_SPEED2 35
+ #define SETUP_RPM_SPEED3 36
+ #define SETUP_RPM_SPEED4 37
+ #define SETUP_RPM_SPEED5 38
+ #define SETUP_RPM_SPEED6 39
 
  #define ON 1
  #define OFF 0

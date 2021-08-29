@@ -124,7 +124,7 @@ void pageObject::boostDown(){
     boostDelayMod -=1;
 }
 
-void pageObject::rpmTabup(int cur){
+void pageObject::rpmTabUp(int cur){
   if (rpmTabMod[cur] < RPM_MAX)
     rpmTabMod[cur] = rpmTabMod[cur]+50;
 }
@@ -138,6 +138,11 @@ void pageObject::saveRpm(char addr,int timer){
   rpm[timer] = rpmMod[timer];
   DebugValPrintln(rpm[timer]);
   eepWriteRpmTimer(rpmMod[timer],addr);
+}
+
+void pageObject::saveRpmVal(char addr, char speedId){
+  rpmTab[speedId] = rpmTabMod[speedId];
+  eepWriteRpm(rpmTab[speedId],addr);
 }
 
 void pageObject::saveBoostDelay(char addr){
