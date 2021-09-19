@@ -77,9 +77,9 @@ void loop() {
       val =checkBoostState();
       drawBoostPage();
       if (val == ON)
-        buttonState = ON;
+        buttonBoost = ON;
       else
-        buttonState = OFF;
+        buttonBoost = OFF;
       currentPage = BOOST_PUMP;
       break;
     }
@@ -268,13 +268,13 @@ void loop() {
     break;
     case BOOST_PUMP:
     if (buttonOnOff->isButtonPushed(x,y,button_on)){
-            if (!buttonState){
-                buttonState = ON;
+            if (!buttonBoost){
+                buttonBoost = ON;
                 // start boost pump
                 boostMessage->sendMessage(BOOST_ON);
               }
               else{
-                buttonState = OFF;
+                buttonBoost = OFF;
                 // stop boost pump
                 boostMessage->sendMessage(BOOST_OFF);
               }
@@ -534,7 +534,7 @@ void checkRunningPage(int x,int y,char curTimer,char h,char m,char s,char rMessa
        }
        if (buttonHome1->isButtonPushed(x,y)){
         // stop pump
-        sendPumpMessage(NO_T);
+        //sendPumpMessage(NO_T);
         stopTimer(curTimer);
         goHomePage();
         return;

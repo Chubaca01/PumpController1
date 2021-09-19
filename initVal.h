@@ -17,6 +17,7 @@
   extern int sw_pos[];
   extern int currentPage;
   extern int buttonState;
+  extern int buttonBoost;
   extern int force;
 
   extern unsigned int button_home[];

@@ -26,6 +26,7 @@ int sw_pos[4];
 // main page variables
 int currentPage;
 int buttonState;
+int buttonBoost;
 int force;
 
 void initInputOutput(){

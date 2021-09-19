@@ -122,6 +122,11 @@ void boostCmd(char bCmd){
         pumpCmd(CMD_START_CLEAN);
         initPumpDelay();
       }
+      else
+      {
+        // start boost pump
+        digitalWrite(BP,LOW);
+      }
       return;
     }
   else if (bCmd == BOOST_OFF)
